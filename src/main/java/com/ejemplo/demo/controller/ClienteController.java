@@ -19,19 +19,14 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Cliente> getCliente(@PathVariable Long id){
-        Cliente cliente = clienteService.getClienteById(id);
+    public ResponseEntity<ClienteDTO> getCliente(@PathVariable Long id){
+        ClienteDTO cliente = clienteService.getClienteById(id);
 
-        ClienteDTO clienteDTO = new ClienteDTO();
-        clienteDTO.setEmail(cliente.getEmail());
-        clienteDTO.setApellido(cliente.getApellido());
-        clienteDTO.setNombre(cliente.getNombre());
+        cliente.add(linkTo(methodOn(ClienteController.class).getCliente(id)).withSelfRel(),
+                linkTo(methodOn(ClienteController.class).saveCliente(new ClienteDTO())).withRel("Guardar Cliente"),
+                linkTo(methodOn(ClienteController.class).updateCliente(new ClienteDTO(), id)).withRel("Actualizar Cliente"),
+                linkTo(methodOn(ClienteController.class).deleteCliente(id)).withRel("Eliminar Cliente"));
 
-        clienteDTO.setFechaNacimiento(cliente.getFechaNacimiento());
-        cliente.add(linkTo(methodOn(ClienteController.class).getCliente(cliente.getId())).withSelfRel(),
-                linkTo(methodOn(ClienteController.class).saveCliente(clienteDTO)).withRel("Guardar Cliente"),
-                linkTo(methodOn(ClienteController.class).updateCliente(clienteDTO, cliente.getId())).withRel("Actualizar Cliente"),
-                linkTo(methodOn(ClienteController.class).deleteCliente(cliente.getId())).withRel("Eliminar Cliente"));
         return ResponseEntity.ok().body(cliente);
     }
 

@@ -14,9 +14,17 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository; //La conexion a la base de datos
 
-    public Cliente getClienteById(Long id) {
+    public ClienteDTO getClienteById(Long id) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
-        return clienteOptional.orElse(new Cliente());
+        Cliente cliente = clienteOptional.orElse(new Cliente());
+
+        ClienteDTO clienteDTO = new ClienteDTO();
+        clienteDTO.setApellido(cliente.getApellido());
+        clienteDTO.setNombre(cliente.getNombre());
+        clienteDTO.setEmail(cliente.getEmail());
+        clienteDTO.setFechaNacimiento(cliente.getFechaNacimiento());
+
+        return clienteDTO;
     }
 
     public Cliente saveCliente(ClienteDTO clienteDTO) {

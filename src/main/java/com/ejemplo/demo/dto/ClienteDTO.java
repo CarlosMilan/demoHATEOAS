@@ -4,7 +4,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 
-public class ClienteDTO  {
+public class ClienteDTO extends RepresentationModel<ClienteDTO> {
 
     private String nombre;
     private String apellido;
